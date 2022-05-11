@@ -61,7 +61,6 @@ const run = async () => {
     }
 
     const content = fs.readFileSync(lockPath, { encoding: 'utf8' })
-    console.log({ content })
     const updatedLock = packageLockParser.parseLockFile(content)
 
     const oktokitParams = { owner, repo }
@@ -91,8 +90,6 @@ const run = async () => {
     if (!baseLockData || !baseLockData.data || !baseLockData.data.content) {
       throw Error('💥 Cannot fetch repository base lock file, aborting!')
     }
-
-    console.log({ oldContent: Base64.decode(baseLockData.data.content) })
 
     const baseLock = packageLockParser.parseLockFile(Base64.decode(baseLockData.data.content))
     const lockChanges = diffLocks(baseLock, updatedLock)
