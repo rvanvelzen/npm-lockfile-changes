@@ -46,13 +46,9 @@ jobs:
 
 ## 📸 Preview
 
-### Basic comment appearance
+### Comment appearance
 
-<img alt="basic" src="https://user-images.githubusercontent.com/719641/116818857-c5029d80-ab6d-11eb-8b48-122b851c1d9e.png">
-
-### Comment appearance when `collapsibleThreshold` has been reached
-
-<img alt="summary" src="https://user-images.githubusercontent.com/719641/116819012-7efa0980-ab6e-11eb-99f1-15996b6f12b4.png">
+![Comment Appearance](https://github.com/codepunkt/npm-lockfile-changes/blob/main/.github/images/npm-lockfile-changes.png?raw=true)
 
 ## 📋 Common issues
 
