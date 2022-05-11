@@ -79,7 +79,8 @@ const run = async () => {
       throw Error('💥 Cannot fetch repository base branch tree, aborting!')
     }
 
-    const baseLockSHA = baseTree.data.tree.filter((file) => file.path === 'yarn.lock')[0].sha
+    const baseLockSHA = baseTree.data.tree.filter((file) => file.path === 'package-lock.json')[0]
+      .sha
     debug('Base lockfile SHA: ' + baseLockSHA)
 
     const baseLockData = await octokit.request('GET /repos/{owner}/{repo}/git/blobs/{file_sha}', {
