@@ -1,4 +1,4 @@
-name: Yarn Lock Changes
+name: NPM Lockfile Changes
 on: [pull_request, workflow_dispatch]
 
 jobs:

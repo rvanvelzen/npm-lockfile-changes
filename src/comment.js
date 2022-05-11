@@ -1,16 +1,16 @@
-const { markdownTable } = require('markdown-table');
+const { markdownTable } = require('markdown-table')
 
-const { STATUS, countStatuses } = require('./utils');
+const { STATUS, countStatuses } = require('./utils')
 
 const ASSETS_URL = {
   ADDED: 'https://git.io/J38HP',
   DOWNGRADED: 'https://git.io/J38ds',
   REMOVED: 'https://git.io/J38dt',
   UPDATED: 'https://git.io/J38dY',
-};
+}
 
 const getStatusLabel = (status) =>
-  `[<sub><img alt="${status}" src="${ASSETS_URL[status]}" height="16" /></sub>](#)`;
+  `[<sub><img alt="${status}" src="${ASSETS_URL[status]}" height="16" /></sub>](#)`
 
 export const createTable = (lockChanges, plainStatuses = false) =>
   markdownTable(
@@ -26,12 +26,12 @@ export const createTable = (lockChanges, plainStatuses = false) =>
         .sort((a, b) => a[0].localeCompare(b[0])),
     ],
     { align: ['l', 'c', 'c', 'c'], alignDelimiters: false }
-  );
+  )
 
 const createSummaryRow = (lockChanges, status) => {
-  const statusCount = countStatuses(lockChanges, status);
-  return statusCount ? [getStatusLabel(status), statusCount] : undefined;
-};
+  const statusCount = countStatuses(lockChanges, status)
+  return statusCount ? [getStatusLabel(status), statusCount] : undefined
+}
 
 export const createSummary = (lockChanges) =>
   markdownTable(
@@ -43,4 +43,4 @@ export const createSummary = (lockChanges) =>
       createSummaryRow(lockChanges, STATUS.REMOVED),
     ].filter(Boolean),
     { align: ['l', 'c'], alignDelimiters: false }
-  );
+  )
