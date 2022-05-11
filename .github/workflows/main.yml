@@ -9,11 +9,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Yarn Lock Changes
+      - name: NPN Lockfile Changes
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: '[Test] Yarn Lock Changes Detached Package'
+      - name: '[Test] NPM Lockfile Changes Detached Package'
         uses: ./
         with:
           path: tests/ci/package-lock.json
