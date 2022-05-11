@@ -61,10 +61,12 @@ const run = async () => {
       );
     }
 
+    console.log({ lockPath });
     const content = fs.readFileSync(lockPath, { encoding: 'utf8' });
     // const updatedLock = lockfile.parse(content);
+    console.log({ content });
     const updatedLock = packageLockParser.parseLockFile(content);
-    console.log({ content, updatedLock });
+    console.log({ updatedLock });
 
     const oktokitParams = { owner, repo };
     debug('Oktokit params: ' + JSON.stringify(oktokitParams));
