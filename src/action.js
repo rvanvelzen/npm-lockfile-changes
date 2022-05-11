@@ -91,7 +91,7 @@ const run = async () => {
       throw Error('💥 Cannot fetch repository base lock file, aborting!')
     }
 
-    const baseLock = packageLockParser.parse(Base64.decode(baseLockData.data.content))
+    const baseLock = packageLockParser.parseLockFile(Base64.decode(baseLockData.data.content))
     const lockChanges = diffLocks(baseLock, updatedLock)
     const lockChangesCount = Object.keys(lockChanges).length
 
