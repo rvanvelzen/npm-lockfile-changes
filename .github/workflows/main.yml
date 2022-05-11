@@ -1,5 +1,5 @@
-name: Yarn Lock Changes
-on: [pull_request]
+name: NPM Lockfile Changes
+on: [pull_request, workflow_dispatch]
 
 jobs:
   check:
@@ -9,12 +9,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Yarn Lock Changes
+      - name: NPN Lockfile Changes
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: '[Test] Yarn Lock Changes Detached Package'
+      - name: '[Test] NPM Lockfile Changes Detached Package'
         uses: ./
         with:
-          path: tests/ci/yarn.lock
+          path: tests/ci/package-lock.json
           token: ${{ secrets.GITHUB_TOKEN }}

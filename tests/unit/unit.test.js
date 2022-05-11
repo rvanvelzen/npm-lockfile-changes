@@ -1,43 +1,36 @@
-const lockfile = require('@yarnpkg/lockfile');
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
+const PackageLockParser =
+  require('snyk-nodejs-lockfile-parser/dist/parsers/package-lock-parser').PackageLockParser
+const { diffLocks, STATUS, countStatuses } = require('../../src/utils')
 
-const { diffLocks, STATUS, countStatuses } = require('../../src/utils');
+let packageLockParser
 
 const getTestLockContent = (testName, filename) => {
   const content = fs.readFileSync(
     path.resolve(process.cwd(), './tests/unit/', testName, filename),
-    {
-      encoding: 'utf8'
-    }
-  );
-  return content;
-};
+    { encoding: 'utf-8' }
+  )
+  return content
+}
 
-test('no downgrade detected', () => {
-  const contentA = getTestLockContent('downgrade', 'a.lock');
-  const contentB = getTestLockContent('downgrade', 'b.lock');
+beforeEach(() => {
+  packageLockParser = new PackageLockParser()
+})
 
-  const result = diffLocks(lockfile.parse(contentA), lockfile.parse(contentB));
+test('calculating the diff of two lockfiles works', () => {
+  const contentA = getTestLockContent('downgrade', 'a.json')
+  const contentB = getTestLockContent('downgrade', 'b.json')
 
-  expect(Object.keys(result).length).toBe(52);
+  const result = diffLocks(
+    packageLockParser.parseLockFile(contentA),
+    packageLockParser.parseLockFile(contentB)
+  )
 
-  expect(countStatuses(result, STATUS.ADDED)).toBe(3);
-  expect(countStatuses(result, STATUS.UPDATED)).toBe(49);
-  expect(countStatuses(result, STATUS.DOWNGRADED)).toBe(0);
-  expect(countStatuses(result, STATUS.REMOVED)).toBe(0);
-});
+  expect(Object.keys(result).length).toBe(6)
 
-test('no downgrade detected, multiple cases', () => {
-  const contentA = getTestLockContent('downgrade-complex', 'a.lock');
-  const contentB = getTestLockContent('downgrade-complex', 'b.lock');
-
-  const result = diffLocks(lockfile.parse(contentA), lockfile.parse(contentB));
-
-  expect(Object.keys(result).length).toBe(389);
-
-  expect(countStatuses(result, STATUS.ADDED)).toBe(357);
-  expect(countStatuses(result, STATUS.UPDATED)).toBe(32);
-  expect(countStatuses(result, STATUS.DOWNGRADED)).toBe(0);
-  expect(countStatuses(result, STATUS.REMOVED)).toBe(0);
-});
+  expect(countStatuses(result, STATUS.ADDED)).toBe(5)
+  expect(countStatuses(result, STATUS.UPDATED)).toBe(0)
+  expect(countStatuses(result, STATUS.DOWNGRADED)).toBe(1)
+  expect(countStatuses(result, STATUS.REMOVED)).toBe(0)
+})
