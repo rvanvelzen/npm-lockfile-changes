@@ -21,8 +21,9 @@ const formatForVersionCompare = (key) => {
 
 const formatLockEntry = (obj) =>
   Object.fromEntries(
-    Object.entries(obj.dependencies)
-      .map(([key, { version }]) => `${key}@${version}`)
+    Object.entries(obj.dependencies || obj.packages)
+      .map(([key, { version }]) => `${key.replace(/\bnode_modules\//g, '')}@${version}`)
+      .filter((a) => a.split('/').length === (a[0] === '@' ? 2 : 1))
       .sort((a, b) => {
         const nameCompare = formatForNameCompare(a).localeCompare(formatForNameCompare(b))
         if (nameCompare === 0) {
@@ -32,8 +33,8 @@ const formatLockEntry = (obj) =>
       })
       .map((key) => {
         const nameParts = key.split('@')
-        const name = nameParts[0] === '' ? '@' + nameParts[1] : nameParts[0]
-        const version = nameParts[0] === '' ? nameParts[2] : nameParts[1]
+        const version = nameParts.pop()
+        const name = nameParts.join('@')
         return [name, { name, version }]
       })
   )
