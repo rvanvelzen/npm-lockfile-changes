@@ -17,6 +17,7 @@ const getCommentId = async (octokit, oktokitParams, issueNumber, commentHeader) 
     issue_number: issueNumber,
     per_page: 100,
   })
+  const actionUser = await octokit.rest.users.getAuthenticated();
 
   if (!currentComments || !currentComments.data) {
     throw Error('💥 Cannot fetch PR comments data, aborting!')
@@ -24,7 +25,7 @@ const getCommentId = async (octokit, oktokitParams, issueNumber, commentHeader) 
 
   return currentComments.data
     .filter(
-      ({ user, body }) => user.login === 'github-actions[bot]' && body.startsWith(commentHeader)
+      ({ user, body }) => user.login === actionUser.login && body.startsWith(commentHeader)
     )
     .map(({ id }) => id)[0]
 }
